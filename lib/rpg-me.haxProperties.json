@@ -1,0 +1,45 @@
+{
+    "api": "1",
+    "canScale": true,
+    "canEditSource": true,
+    "type": "element",
+    "gizmo": {
+      "title": "rpg-me",
+      "description": "Customizable RPG character editor",
+      "icon": "icons:android",
+      "color": "purple",
+      "tags": ["game", "character", "customization"],
+      "handles": [],
+      "meta": {
+        "author": "Lil-02"
+      }
+    },
+    "settings": {
+      "configure": [
+        {
+          "property": "title",
+          "title": "Title",
+          "description": "Title for the component",
+          "inputMethod": "textfield",
+          "required": true
+        },
+        {
+          "property": "seed",
+          "title": "Seed",
+          "description": "Seed for character generation",
+          "inputMethod": "textfield"
+        }
+      ]
+    },
+    "saveOptions": {
+      "wipeSlot": false
+    },
+    "demoSchema": [
+      {
+        "tag": "rpg-me",
+        "properties": { "title": "Demo Title" },
+        "content": ""
+      }
+    ]
+  }
+n  
