@@ -13,12 +13,11 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     super();
     this.title = "RPG Character Manager";
     this.t = { title: "Title" };
+    this.seed = null;
 
-    // Initialize multiple characters with common names
+    
     this.characters = [
       this._createDefaultCharacter("John"),
-      this._createDefaultCharacter("Alice"),
-      this._createDefaultCharacter("Bob"),
     ];
   }
 
@@ -45,7 +44,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           padding: var(--ddd-spacing-4);
           border-radius: 10px;
           background: #dd8cec;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 100 4px 6px rgba(0, 0, 0, 0.2);
         }
         .characters-container {
           display: flex;
@@ -55,7 +54,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         }
         .character-card {
           flex: 1 1 300px;
-          max-width: 400px;
+          max-width: 8000px;
           padding: 20px;
         }
         .character-controls {
@@ -67,13 +66,13 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         }
         .character-inputs label {
           display: block;
-          margin-bottom: 10px;
+          margin-bottom: 5px;
         }
         .character-inputs select,
         .character-inputs input {
-          width: 100%;
+          width: 90%;
           padding: 8px;
-          margin-bottom: 10px;
+          margin-bottom: 20px;
         }
       `
     ];
@@ -95,18 +94,13 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
                     .accessories="${character.accessories}"
                     .height="${character.height}"
                     .width="${character.width}"
-                    .base="${character.base}"
                     .face="${character.face}"
-                    .faceItem="${character.faceItem}"
                     .hair="${character.hair}"
                     .pants="${character.pants}"
                     .shirt="${character.shirt}"
                     .skin="${character.skin}"
                     .hat="${character.hat}"
                     .hatColor="${character.hatColor}"
-                    .walking="${character.walking}"
-                    .leg="${character.leg}"
-                    .speed="${character.speed}"
                     .circle="${character.circle}"
                     .fire="${character.fire}"
                     .demo="${character.demo}"
@@ -127,17 +121,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             `
           )}
         </div>
-
-        <!-- Add/Remove Character Controls -->
-        <div class="character-controls">
-          <wired-button @click="${this._addCharacter}">Add Character</wired-button>
-          <wired-button
-            @click="${this._removeCharacter}"
-            ?disabled="${this.characters.length <= 1}"
-          >
-            Remove Character
-          </wired-button>
-        </div>
       </wired-card>
     `;
   }
@@ -145,20 +128,17 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   _createDefaultCharacter(name) {
     return {
       name,
+      height:400,
+      width: 400,
       accessories: 0,
-      height: 142,
-      width: 113,
-      base: false, // checkbox
       face: 0, // Dropdown 0-5
-      faceItem: 0, // Dropdown 0-9
       hair: 0, // Dropdown 0-9
       pants: 0, // Dropdown 0-9
       shirt: 0, // Dropdown (shirt options)
       skin: 0, // Dropdown (skin options)
       hat: "none", // Default hat
       hatColor: 0, // Dropdown for hat color
-      base: false, // Number input
-      circle: true, // Checkbox
+      circle: false, // Checkbox
       fire: false, // Checkbox
       demo: false, // Checkbox
     };
@@ -167,27 +147,28 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   _renderInput(prop, value, index) {
     switch (prop) {
       case "hat":
-        return html`
-          <select
-            .value="${value}"
-            @change="${(e) => this._onPropertyChange(e, prop, index)}"
-          >
-            <option value="none">None</option>
-            <option value="bunny">Bunny</option>
-            <option value="cowboy">Cowboy</option>
-            <option value="education">Education</option>
-            <option value="construction">Construction</option>
-            <option value="warning">Warning</option>
-            <option value="watermelon">Watermelon</option>
-            <option value="coffee">Coffee</option>
-            <option value="knight">Knight</option>
-            <option value="ninja">Ninja</option>
-            <option value="party">Party</option>
-            <option value="pirate">Pirate</option>
-            <option value="error">Error</option>
-            <option value="edit">Edit</option>
-          </select>
-        `;
+  return html`
+    <select
+      .value="${value}"
+      @change="${(e) => this._onPropertyChange(e, prop, index)}"
+    >
+      <option value="none">Normal</option>
+      <option value="Bunny">Bunny</option>
+      <option value="cowboy">Cowboy</option>
+      <option value="education">Education</option>
+      <option value="construction">Construction</option>
+      <option value="warning">Warning</option>
+      <option value="watermelon">Watermelon</option>
+      <option value="coffee">Coffee</option>
+      <option value="knight">Knight</option>
+      <option value="ninja">Ninja</option>
+      <option value="party">Party</option>
+      <option value="pirate">Pirate</option>
+      <option value="error">Error</option>
+      <option value="edit">Edit</option>
+    </select>
+  `;
+
       case "hatColor":
         return html`
           <select
@@ -212,16 +193,16 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             .value="${value}"
             @change="${(e) => this._onPropertyChange(e, prop, index)}"
           >
-            <option value= 0 >Grey</option>
-            <option value= 1>Red</option>
-            <option value= 2>Blue</option>
-            <option value= 3>Black</option>
-            <option value= 4>Teal</option>
-            <option value= 5>Yellow</option>
-            <option value= 6>Purple</option>
-            <option value= 7>Green</option>
-            <option value= 8>Orange</option>
-            <option value= 9>Pink</option>
+            <option value= 0>dress Pants</option>
+            <option value= 1>blue </option>
+            <option value= 2>black </option>
+            <option value= 3>white</option>
+            <option value= 4>white shorts</option>
+            <option value= 5>black shorts</option>
+            <option value= 6>jorts</option>
+            <option value= 7>jeans</option>
+            <option value= 8>black jeans</option>
+            <option value= 9>white jeans</option>
           </select>
         `;
       case "shirt":
@@ -248,7 +229,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             .value="${value}"
             @change="${(e) => this._onPropertyChange(e, prop, index)}"
           >
-            <option value= 0 >pale</option>
+            <option value= 0>pale</option>
             <option value= 1>white</option>
             <option value= 2>grey</option>
             <option value= 3>light brown</option>
@@ -275,24 +256,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           <option value= 5>happy</option>
         </select>
       `;
-      case "faceItem":
-        return html`
-        <select
-          .value="${value}"
-          @change="${(e) => this._onPropertyChange(e, prop, index)}"
-        >
-          <option value= 0 >nothing</option>
-          <option value= 1>white necklace</option>
-          <option value= 2>brown bowtie</option>
-          <option value= 3>black bowtie</option>
-          <option value= 4>blue bowtie</option>
-          <option value= 5>blue tie</option>
-          <option value= 6>brown tie</option>
-          <option value= 7>purple tie</option>
-          <option value= 8>necklace with gold gem</option>
-          <option value= 9>necklace with green gem</option>
-        </select>
-      `;
+      
       case "hair":
         return html`
         <select
@@ -325,16 +289,13 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           <option value= 5>blue tie</option>
           <option value= 6>brown tie</option>
           <option value= 7>purple tie</option>
-          <option value= 8>necklace with gold gem</option>
           <option value= 9>necklace with green gem</option>
         </select>
       `;
      
      case "circle":
-      case "fire":
-      case "demo":
-      case "base":
-      case "walking":
+     case "fire":
+     case "demo":
         return html`
           <input
             type="checkbox"
@@ -354,58 +315,28 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     }
   }
 
-  _getOptionsForProp(prop) {
-    switch (prop) {
-      case "hatColor":
-        return [
-          "grey", "red", "blue", "black", "teal", "yellow", "purple", "green", "orange", "pink"
-        ];
-      case "shirt":
-        return [
-          "black short sleeve", "white tank top", "white striped shirt", "Salmon short sleeve", "salmon long sleeve",
-          "blue long sleeve", "white long sleeve", "blue short sleeve", "white short sleeve", "black long sleeve"
-        ];
-      case "skin":
-        return [
-          "pale", "white", "grey", "light brown", "brown", "dark brown", "yellow", "blue", "green", "pink"
-        ];
-        case "hair":
-        return [
-          "grey", "black", "auburn", "light brown", "gold", "green", "teal", "brown", "purple","blonde"
-        ];
-        case "face":
-        return [
-          "nothing", "mustache", "bruh", "sad", "nose and bruh", "happy"
-        ];
-      default:
-        return [];
-    }
-  }
-
   _onPropertyChange(event, prop, index) {
     const value =
-      prop === "name" || prop === "demo" || prop === "base" || prop === "fire" 
+      prop === "name"
         ? event.target.value
         : event.target.type === "checkbox"
-        ? event.target.clicked
+        ? event.target.checked
+        : Number.isNaN(Number(event.target.value)) 
+        ? event.target.value
         : Number(event.target.value);
-    this.characters[index][prop] = value;
+  
+    // Update the specific property of the character
+    this.characters[index] = {
+      ...this.characters[index],
+      [prop]: value,
+    };
+  
+    // Request an update to re-render
     this.requestUpdate();
   }
+  
 
-  _addCharacter() {
-    const commonNames = ["John", "Alice", "Bob", "Emma", "Liam", "Sophia", "James", "Olivia"];
-    const randomName = commonNames[Math.floor(Math.random() * commonNames.length)];
-    this.characters.push(this._createDefaultCharacter(randomName));
-    this.requestUpdate();
-  }
 
-  _removeCharacter() {
-    if (this.characters.length > 1) {
-      this.characters.pop();
-      this.requestUpdate();
-    }
-  }
 }
 
 globalThis.customElements.define(RpgMe.tag, RpgMe);
