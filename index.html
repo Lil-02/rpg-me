@@ -5,14 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>rpg-me</title>
+    <!-- Polyfill for older browsers -->
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   </head>
   <body>
     <div id="demo">
       <h1>Welcome to the Workshop :)</h1>
+      <!-- RPG character builder -->
       <rpg-me title="Build-A-Character"></rpg-me>
     </div>
+    <!-- Ensure correct path -->
     <script type="module" src="./rpg-me.js"></script>
   </body>
 </html>
-
- 
