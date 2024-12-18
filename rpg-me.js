@@ -12,9 +12,14 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.title = "RPG Character Manager";
-    this.seed = this.getSeedFromURL() || this.generateSeed();
+    const urlSeed = this.getSeedFromURL();
+    this.seed = urlSeed || this.generateSeed();
     this.characterSettings = this.parseSeed(this.seed);
+    if (!urlSeed) {
+      this.updateURL(); // Ensure the URL reflects the default seed
+    }
   }
+  
 
   static get properties() {
     return {
@@ -179,13 +184,30 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
     window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
   }
 
-  shareCharacter() {
+  copyLink() {
     const shareUrl = `${window.location.origin}${window.location.pathname}?seed=${this.seed}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
       alert(`Link copied to clipboard: ${shareUrl}`);
     });
   }
-
+  shareToTwitter() {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?seed=${this.seed}`;
+    const message = `Check out this RPG character I created! Customize your own: ${shareUrl}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+    window.open(twitterUrl, "_blank");
+  }
+  
+  shareToLinkedIn() {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?seed=${this.seed}`;
+    const linkedInUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=RPG Character&summary=Check out this RPG character I've created!`;
+    window.open(linkedInUrl, "_blank");
+  }
+  
+  shareToInstagram() {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?seed=${this.seed}`;
+    alert(`Instagram doesn't support direct URL sharing. Please share this link manually in your story or post: ${shareUrl}`);
+  }
+  
   render() {
     return html`
       <div class="wrapper">
@@ -205,7 +227,10 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           .fire="${this.characterSettings.fire}"
         ></rpg-character>
         <div>
-          <wired-button @click="${this.shareCharacter}">Share Character</wired-button>
+        <wired-button @click="${this.copyLink}">Copy Link</wired-button>  
+        <wired-button @click="${this.shareToTwitter}">Share on Twitter</wired-button>
+          <wired-button @click="${this.shareToLinkedIn}">Share on LinkedIn</wired-button>
+          <wired-button @click="${this.shareToInstagram}">Share on Instagram</wired-button>
         </div>
         <div class="character-inputs">
           <h3>Customize Character</h3>
@@ -214,6 +239,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       </div>
     `;
   }
+  
 
   _renderInputs() {
     const options = {
