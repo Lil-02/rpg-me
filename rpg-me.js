@@ -30,34 +30,52 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        padding: 16px;
-        color: #333;
-      }
-      .wrapper {
-        max-width: 800px;
-        margin: auto;
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-      wired-button {
-        margin: 10px 0;
-      }
-      .character-inputs label {
-        display: block;
-        margin-bottom: 10px;
-      }
-      .character-inputs input,
-      .character-inputs select {
-        width: 100%;
-        padding: 8px;
-        margin: 5px 0;
-      }
-    `;
+    return [
+      super.styles,
+      css`
+        :host {
+          display: block;
+          color: var(--ddd-theme-primary);
+          background-color: var(--ddd-theme-accent);
+          font-family: var(--ddd-font-navigation);
+        }
+        .wrapper {
+          margin: var(--ddd-spacing-2);
+          padding: var(--ddd-spacing-4);
+          border-radius: 10px;
+          background: #dd8cec;
+          box-shadow: 100 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .characters-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+        }
+        .character-card {
+          flex: 1 1 300px;
+          max-width: 8000px;
+          padding: 20px;
+        }
+        .character-controls {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        wired-button {
+          margin: 5px;
+        }
+        .character-inputs label {
+          display: block;
+          margin-bottom: 5px;
+        }
+        .character-inputs select,
+        .character-inputs input {
+          width: 9%;
+          padding: 8px;
+          margin-bottom: 20px;
+        }
+      `
+    ];
   }
 
   getSeedFromURL() {
